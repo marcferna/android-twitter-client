@@ -1,12 +1,13 @@
 package com.codepath.apps.twitterclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
 import com.codepath.oauth.OAuthLoginActivity;
 
-public class LoginActivity extends OAuthLoginActivity<RestClient> {
+public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +26,8 @@ public class LoginActivity extends OAuthLoginActivity<RestClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-		// Intent i = new Intent(this, PhotosActivity.class);
-		// startActivity(i);
+    Intent homepageIntent = new Intent(this, TimelineActivity.class);
+    startActivity(homepageIntent);
 	}
 
 	// OAuth authentication flow failed, handle the error
