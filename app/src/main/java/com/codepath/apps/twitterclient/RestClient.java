@@ -1,4 +1,4 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.twitterclient;
 
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.FlickrApi;
