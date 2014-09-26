@@ -8,5 +8,6 @@
   <string name="default_body_text">This is the tweet body</string>
   <string name="default_user_name_text">\@foo</string>
   <string name="default_created_at_text">now</string>
+  <string name="default_name_text">Name</string>
 
 </resources>

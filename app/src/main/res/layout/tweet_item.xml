@@ -18,9 +18,10 @@
     android:layout_height="wrap_content"
     android:text="@string/default_user_name_text"
     android:id="@+id/tvUserName"
+    android:layout_toEndOf="@+id/tvName"
     android:layout_alignParentTop="true"
-    android:layout_toRightOf="@+id/ivProfileImage"
-    android:layout_toEndOf="@+id/ivProfileImage"/>
+    android:layout_toRightOf="@+id/tvName"
+    android:layout_marginLeft="10dp"/>
 
   <TextView
     android:layout_width="wrap_content"
@@ -40,4 +41,14 @@
     android:layout_alignParentTop="true"
     android:layout_alignParentRight="true"
     android:layout_alignParentEnd="true"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/default_name_text"
+    android:id="@+id/tvName"
+    android:layout_alignParentTop="true"
+    android:layout_toRightOf="@+id/ivProfileImage"
+    android:layout_toEndOf="@+id/ivProfileImage"
+    android:textStyle="bold"/>
 </RelativeLayout>
