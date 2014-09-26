@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.codepath.apps.twitterclient.models.Tweet;
@@ -32,10 +31,21 @@ public class TimelineActivity extends Activity {
     tweets = new ArrayList<Tweet>();
     aTweets = new TweetArrayAdapter(this, tweets);
     lvTweets.setAdapter(aTweets);
+
+    lvTweets.setOnScrollListener(new EndlessScrollListener() {
+      @Override
+      public void onLoadMore(int page, int totalItemsCount) {
+        Tweet lastTweet = tweets.get(tweets.size() - 1);
+        TimelineActivity.this.populateTimeline(lastTweet.getUid());
+      }
+    });
   }
 
   public void populateTimeline() {
-    client.getHomeTimeline(new JsonHttpResponseHandler() {
+    this.populateTimeline(0);
+  }
+  public void populateTimeline(long maxId) {
+    client.getHomeTimeline(maxId, new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(JSONArray jsonArray) {
         aTweets.addAll(Tweet.fromJSONArray(jsonArray));

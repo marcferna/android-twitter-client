@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,5 +49,17 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
     tvBody.setText(tweet.getBody());
     tvCreatedAt.setText(tweet.getRelativeCreatedAt());
     return v;
+  }
+
+  @Override
+  public void addAll(Collection<? extends Tweet> collection) {
+    if (!isEmpty()) {
+      Tweet lastCurrentTweet = getItem(getCount() - 1);
+      Tweet firstNewTweet = collection.iterator().next();
+      if (lastCurrentTweet.getUid() == firstNewTweet.getUid()) {
+        collection.remove(firstNewTweet);
+      }
+    }
+    super.addAll(collection);
   }
 }
