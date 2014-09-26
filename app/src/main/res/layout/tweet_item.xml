@@ -30,4 +30,14 @@
     android:layout_below="@+id/tvUserName"
     android:layout_toRightOf="@+id/ivProfileImage"
     android:layout_toEndOf="@+id/ivProfileImage"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAppearance="?android:attr/textAppearanceSmall"
+    android:text="@string/default_created_at_text"
+    android:id="@+id/tvCreatedAt"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"/>
 </RelativeLayout>

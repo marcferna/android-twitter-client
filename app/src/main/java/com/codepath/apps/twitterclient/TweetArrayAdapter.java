@@ -36,12 +36,14 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
     ImageView ivProfileImage = (ImageView) v.findViewById(R.id.ivProfileImage);
     TextView tvUserName = (TextView) v.findViewById(R.id.tvUserName);
     TextView tvBody = (TextView) v.findViewById(R.id.tvBody);
+    TextView tvCreatedAt = (TextView) v.findViewById(R.id.tvCreatedAt);
 
     ivProfileImage.setImageResource(0);
     ImageLoader imageLoader = ImageLoader.getInstance();
     imageLoader.displayImage(tweet.getUser().getProfileImageUrl(), ivProfileImage);
     tvUserName.setText(tweet.getUser().getScreenName());
     tvBody.setText(tweet.getBody());
+    tvCreatedAt.setText(tweet.getRelativeCreatedAt());
     return v;
   }
 }

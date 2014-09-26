@@ -7,5 +7,6 @@
     <string name="title_activity_timeline">Timeline</string>
   <string name="default_body_text">This is the tweet body</string>
   <string name="default_user_name_text">\@foo</string>
+  <string name="default_created_at_text">now</string>
 
 </resources>
