@@ -43,7 +43,7 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
     ImageLoader imageLoader = ImageLoader.getInstance();
     imageLoader.displayImage(tweet.getUser().getProfileImageUrl(), ivProfileImage);
     tvName.setText(tweet.getUser().getName());
-    tvUserName.setText(tweet.getUser().getScreenName());
+    tvUserName.setText("@" + tweet.getUser().getScreenName());
     tvBody.setText(tweet.getBody());
     tvCreatedAt.setText(tweet.getRelativeCreatedAt());
     return v;
