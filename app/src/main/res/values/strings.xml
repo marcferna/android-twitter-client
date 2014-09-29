@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Twitter</string>
-    <string name="action_settings">Settings</string>
-    <string name="login_label">Log in</string>
-    <string name="title_activity_timeline">Timeline</string>
+  <string name="app_name">Twitter</string>
+  <string name="action_settings">Settings</string>
+  <string name="login_label">Log in</string>
+  <string name="title_activity_timeline">Timeline</string>
   <string name="default_body_text">This is the tweet body</string>
   <string name="default_user_name_text">\@foo</string>
   <string name="default_created_at_text">now</string>
   <string name="default_name_text">Name</string>
+  <string name="menu_compose">Compose</string>
+  <string name="menu_tweet">Tweet</string>
+
 
 </resources>
