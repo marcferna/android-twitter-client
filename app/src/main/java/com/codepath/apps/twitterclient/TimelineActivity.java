@@ -1,6 +1,10 @@
 package com.codepath.apps.twitterclient;
 
 import android.app.Activity;
+import android.app.LoaderManager;
+import android.content.CursorLoader;
+import android.content.Loader;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
@@ -8,14 +12,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
+import com.activeandroid.content.ContentProvider;
 import com.codepath.apps.twitterclient.fragments.ComposeFragment;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class TimelineActivity extends FragmentActivity  implements
@@ -23,7 +31,7 @@ public class TimelineActivity extends FragmentActivity  implements
 
   private TwitterClient client;
   private ArrayList<Tweet> tweets;
-  private TweetArrayAdapter aTweets;
+  private TweetCursorAdapter aTweets;
   private ListView lvTweets;
 
   ComposeFragment composeFragment;
@@ -33,20 +41,37 @@ public class TimelineActivity extends FragmentActivity  implements
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_timeline);
     client = TwitterApplication.getRestClient();
-    populateTimeline();
+//    populateTimeline();
     lvTweets = (ListView) findViewById(R.id.lvTweets);
     tweets = new ArrayList<Tweet>();
-    aTweets = new TweetArrayAdapter(this, tweets);
+    aTweets = new TweetCursorAdapter(this, null, 0);
     aTweets.notifyDataSetChanged();
     lvTweets.setAdapter(aTweets);
 
-    lvTweets.setOnScrollListener(new EndlessScrollListener() {
+    this.getSupportLoaderManager().initLoader(0, null, new android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>() {
       @Override
-      public void onLoadMore(int page, int totalItemsCount) {
-        Tweet lastTweet = tweets.get(tweets.size() - 1);
-        TimelineActivity.this.populateTimeline(lastTweet.getUid());
+      public android.support.v4.content.Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+        return new android.support.v4.content.CursorLoader(TimelineActivity.this, ContentProvider.createUri(Tweet.class, null), null, null, null, null);
+      }
+
+      @Override
+      public void onLoadFinished(android.support.v4.content.Loader<Cursor> cursorLoader, Cursor cursor) {
+        aTweets.swapCursor(cursor);
+      }
+
+      @Override
+      public void onLoaderReset(android.support.v4.content.Loader<Cursor> cursorLoader) {
+        aTweets.swapCursor(null);
       }
     });
+
+//    lvTweets.setOnScrollListener(new EndlessScrollListener() {
+//      @Override
+//      public void onLoadMore(int page, int totalItemsCount) {
+//        Tweet lastTweet = tweets.get(tweets.size() - 1);
+//        TimelineActivity.this.populateTimeline(lastTweet.getUid());
+//      }
+//    });
   }
 
   public void populateTimeline() {
@@ -56,7 +81,7 @@ public class TimelineActivity extends FragmentActivity  implements
     client.getHomeTimeline(maxId, new JsonHttpResponseHandler() {
       @Override
       public void onSuccess(JSONArray jsonArray) {
-        aTweets.addAll(Tweet.fromJSONArray(jsonArray));
+        Tweet.fromJSONArray(jsonArray);
       }
 
       @Override
@@ -102,7 +127,7 @@ public class TimelineActivity extends FragmentActivity  implements
 
   public void onTweetComposed(Tweet tweet) {
     // Add the newly created tweet
-    aTweets.insert(tweet, 0);
+//    aTweets.insert(tweet, 0);
     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
     ft.remove(composeFragment);
     ft.commit();
