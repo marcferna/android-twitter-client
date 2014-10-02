@@ -1,111 +1,141 @@
 package com.codepath.apps.twitterclient;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.codepath.apps.twitterclient.adapters.ViewPagerAdapter;
 import com.codepath.apps.twitterclient.fragments.ComposeFragment;
+import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
+import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
+import com.codepath.apps.twitterclient.listeners.SherlockTabListener;
 import com.codepath.apps.twitterclient.models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
+import com.codepath.apps.twitterclient.page_transformers.ZoomOutPageTransformer;
 
-import org.json.JSONArray;
 
-import java.util.ArrayList;
-
-public class TimelineActivity extends FragmentActivity  implements
+public class TimelineActivity extends SherlockFragmentActivity implements
     ComposeFragment.OnItemSelectedListener {
 
-  private TwitterClient client;
-  private ArrayList<Tweet> tweets;
-  private TweetArrayAdapter aTweets;
-  private ListView lvTweets;
-
   ComposeFragment composeFragment;
+
+  ActionBar actionBar;
+  ViewPager viewPager;
+  ActionBar.Tab tab;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_timeline);
-    client = TwitterApplication.getRestClient();
-    populateTimeline();
-    lvTweets = (ListView) findViewById(R.id.lvTweets);
-    tweets = new ArrayList<Tweet>();
-    aTweets = new TweetArrayAdapter(this, tweets);
-    aTweets.notifyDataSetChanged();
-    lvTweets.setAdapter(aTweets);
-
-    lvTweets.setOnScrollListener(new EndlessScrollListener() {
-      @Override
-      public void onLoadMore(int page, int totalItemsCount) {
-        Tweet lastTweet = tweets.get(tweets.size() - 1);
-        TimelineActivity.this.populateTimeline(lastTweet.getUid());
-      }
-    });
+    setupTabs();
   }
 
-  public void populateTimeline() {
-    this.populateTimeline(0);
-  }
-  public void populateTimeline(long maxId) {
-    client.getHomeTimeline(maxId, new JsonHttpResponseHandler() {
+  private void setupTabs() {
+    actionBar = getSupportActionBar();
+    actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+    actionBar.setDisplayShowTitleEnabled(true);
+
+    viewPager = (ViewPager) findViewById(R.id.vpTabs);
+
+    // Activate Fragment Manager
+    FragmentManager fm = getSupportFragmentManager();
+
+    // Capture ViewPager page swipes
+    ViewPager.SimpleOnPageChangeListener ViewPagerListener = new ViewPager.SimpleOnPageChangeListener() {
       @Override
-      public void onSuccess(JSONArray jsonArray) {
-        aTweets.addAll(Tweet.fromJSONArray(jsonArray));
+      public void onPageSelected(int position) {
+        super.onPageSelected(position);
+        // Find the ViewPager Position
+        actionBar.setSelectedNavigationItem(position);
       }
 
       @Override
-      public void onFailure(Throwable throwable, String s) {
-        Log.i("DEBUG", throwable.toString());
-        Log.i("DEBUG", s.toString());
+      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        super.onPageScrolled(position, positionOffset, positionOffsetPixels);
       }
-    });
+    };
+
+    viewPager.setOnPageChangeListener(ViewPagerListener);
+    // Locate the adapter class called ViewPagerAdapter.java
+    ViewPagerAdapter viewpageradapter = new ViewPagerAdapter(fm);
+    // Set the View Pager Adapter into ViewPager
+    viewPager.setAdapter(viewpageradapter);
+
+    viewPager.setPageTransformer(false, new ZoomOutPageTransformer());
+
+    // Capture tab button clicks
+    ActionBar.TabListener tabListener = new ActionBar.TabListener() {
+
+      @Override
+      public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+        // Pass the position on tab click to ViewPager
+        viewPager.setCurrentItem(tab.getPosition());
+      }
+
+      @Override
+      public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        // TODO Auto-generated method stub
+      }
+
+      @Override
+      public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+        // TODO Auto-generated method stub
+      }
+    };
+
+    // Create first Tab
+    tab = actionBar.newTab().setText("Home").setTabListener(tabListener);
+    actionBar.addTab(tab);
+
+    // Create second Tab
+    tab = actionBar.newTab().setText("Mentions").setTabListener(tabListener);
+    actionBar.addTab(tab);
+
   }
 
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.timeline, menu);
-    return true;
-  }
+//  @Override
+//  public boolean onCreateOptionsMenu(Menu menu) {
+//    // Inflate the menu; this adds items to the action bar if it is present.
+//    MenuInflater inflater = getMenuInflater();
+//    inflater.inflate(R.menu.timeline, menu);
+//    return true;
+//  }
 
   public void onClickCompose(MenuItem item) {
     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//    ComposeFragment composeFragment = ComposeFragment.newInstance(5, "my title");
     composeFragment = new ComposeFragment();
 
     ft.replace(R.id.fgCompose, composeFragment);
     ft.commit();
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-    int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
-    if (id == R.id.action_settings) {
-        return true;
-    }
-
-    return super.onOptionsItemSelected(item);
-  }
+//  @Override
+//  public boolean onOptionsItemSelected(MenuItem item) {
+//    // Handle action bar item clicks here. The action bar will
+//    // automatically handle clicks on the Home/Up button, so long
+//    // as you specify a parent activity in AndroidManifest.xml.
+//    int id = item.getItemId();
+//
+//    //noinspection SimplifiableIfStatement
+//    if (id == R.id.action_settings) {
+//        return true;
+//    }
+//
+//    return super.onOptionsItemSelected(item);
+//  }
 
   public void onTweetComposed(Tweet tweet) {
     // Add the newly created tweet
-    aTweets.insert(tweet, 0);
-    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-    ft.remove(composeFragment);
-    ft.commit();
+//    aTweets.insert(tweet, 0);
+//    FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//    ft.remove(composeFragment);
+//    ft.commit();
 
   }
 }

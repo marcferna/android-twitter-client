@@ -4,21 +4,29 @@
     android:layout_height="match_parent"
     tools:context="com.codepath.apps.twitterclient.TimelineActivity">
 
-
-  <ListView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/lvTweets"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:layout_alignParentBottom="true"
-    android:layout_alignParentRight="true"
-    android:layout_alignParentEnd="true"/>
+  <android.support.v4.view.ViewPager
+    android:id="@+id/vpTabs"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+  </android.support.v4.view.ViewPager>
 
   <FrameLayout
     android:id="@+id/fgCompose"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content">
   </FrameLayout>
+
+  <FrameLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    android:id="@+id/flContainer">
+  </FrameLayout>
+
+
 </RelativeLayout>
