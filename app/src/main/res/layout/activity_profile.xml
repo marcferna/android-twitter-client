@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.apps.twitterclient.activities.ProfileActivity">
+
+  <fragment
+    android:layout_width="wrap_content"
+    android:layout_height="100dp"
+    android:name="com.codepath.apps.twitterclient.fragments.profile.UserHeaderFragment"
+    android:id="@+id/fragmentUserHeader"
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    tools:layout="@layout/fragment_user_header"/>
+
+
+  <fragment
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:name="com.codepath.apps.twitterclient.fragments.profile.UserTimelineFragment"
+    android:id="@+id/fragmentUserTimeline"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_alignParentBottom="true"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentEnd="true"
+    tools:layout="@layout/fragment_tweets_list"
+    android:layout_below="@+id/fragmentUserHeader"/>
+
+</RelativeLayout>

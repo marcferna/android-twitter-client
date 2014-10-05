@@ -46,8 +46,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TimelineActivity"
+            android:name="com.codepath.apps.twitterclient.TimelineActivity"
             android:label="@string/title_activity_timeline" >
+        </activity>
+        <activity
+            android:name="com.codepath.apps.twitterclient.activities.ProfileActivity"
+            android:label="@string/title_activity_profile" >
         </activity>
     </application>
 

@@ -1,5 +1,6 @@
 package com.codepath.apps.twitterclient;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -11,6 +12,7 @@ import android.widget.LinearLayout;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.codepath.apps.twitterclient.activities.ProfileActivity;
 import com.codepath.apps.twitterclient.adapters.ViewPagerAdapter;
 import com.codepath.apps.twitterclient.fragments.ComposeFragment;
 import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
@@ -99,20 +101,25 @@ public class TimelineActivity extends SherlockFragmentActivity implements
 
   }
 
-//  @Override
-//  public boolean onCreateOptionsMenu(Menu menu) {
-//    // Inflate the menu; this adds items to the action bar if it is present.
-//    MenuInflater inflater = getMenuInflater();
-//    inflater.inflate(R.menu.timeline, menu);
-//    return true;
-//  }
+  @Override
+  public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    com.actionbarsherlock.view.MenuInflater inflater = getSupportMenuInflater();
+    inflater.inflate(R.menu.timeline, menu);
+    return true;
+  }
 
-  public void onClickCompose(MenuItem item) {
+  public void onClickCompose(com.actionbarsherlock.view.MenuItem item) {
     FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
     composeFragment = new ComposeFragment();
 
     ft.replace(R.id.fgCompose, composeFragment);
     ft.commit();
+  }
+
+  public void onClickProfile(com.actionbarsherlock.view.MenuItem item) {
+    Intent profile_intent = new Intent(this, ProfileActivity.class);
+    startActivity(profile_intent);
   }
 
 //  @Override
