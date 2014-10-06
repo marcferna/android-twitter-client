@@ -1,23 +1,16 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.LinearLayout;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.codepath.apps.twitterclient.activities.ProfileActivity;
+import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.adapters.ViewPagerAdapter;
 import com.codepath.apps.twitterclient.fragments.ComposeFragment;
-import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
-import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
-import com.codepath.apps.twitterclient.listeners.SherlockTabListener;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.page_transformers.ZoomOutPageTransformer;
 
@@ -119,6 +112,7 @@ public class TimelineActivity extends SherlockFragmentActivity implements
 
   public void onClickProfile(com.actionbarsherlock.view.MenuItem item) {
     Intent profile_intent = new Intent(this, ProfileActivity.class);
+    profile_intent.putExtra("user_uuid", 5);
     startActivity(profile_intent);
   }
 

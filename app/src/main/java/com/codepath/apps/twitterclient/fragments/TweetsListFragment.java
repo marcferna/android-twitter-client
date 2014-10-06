@@ -7,20 +7,24 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.codepath.apps.twitterclient.EndlessScrollListener;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TweetArrayAdapter;
 
+import com.codepath.apps.twitterclient.TwitterApplication;
+import com.codepath.apps.twitterclient.TwitterClient;
 import com.codepath.apps.twitterclient.models.Tweet;
 
 
 import java.util.ArrayList;
 
 
-public class TweetsListFragment extends SherlockFragment {
+public abstract class TweetsListFragment extends SherlockFragment {
 
   private ArrayList<Tweet> tweets;
   private TweetArrayAdapter aTweets;
   private ListView lvTweets;
+  protected TwitterClient client;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,8 @@ public class TweetsListFragment extends SherlockFragment {
     tweets = new ArrayList<Tweet>();
     aTweets = new TweetArrayAdapter(getActivity(), tweets);
     aTweets.notifyDataSetChanged();
+    client = TwitterApplication.getRestClient();
+    populateWithTweets();
   }
 
   @Override
@@ -38,16 +44,21 @@ public class TweetsListFragment extends SherlockFragment {
 
     lvTweets = (ListView) v.findViewById(R.id.lvTweets);
     lvTweets.setAdapter(aTweets);
-//    lvTweets.setOnScrollListener(new EndlessScrollListener() {
-//      @Override
-//      public void onLoadMore(int page, int totalItemsCount) {
-//        Tweet lastTweet = tweets.get(tweets.size() - 1);
-//        TweetsListFragment.this.populateTimeline(lastTweet.getUid());
-//      }
-//    });
+    lvTweets.setOnScrollListener(new EndlessScrollListener() {
+      @Override
+      public void onLoadMore(int page, int totalItemsCount) {
+        Tweet lastTweet = tweets.get(tweets.size() - 1);
+        TweetsListFragment.this.populateWithTweets(lastTweet.getUid());
+      }
+    });
 
     return v;
   }
+
+  protected void populateWithTweets () {
+    populateWithTweets(0);
+  }
+  protected abstract void populateWithTweets(long maxId);
 
   public void addAll(ArrayList<Tweet> tweets) {
     aTweets.addAll(tweets);

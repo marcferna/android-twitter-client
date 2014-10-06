@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.codepath.apps.twitterclient.fragments.HomeTimelineFragment;
-import com.codepath.apps.twitterclient.fragments.MentionsTimelineFragment;
+import com.codepath.apps.twitterclient.fragments.timeline.HomeTimelineFragment;
+import com.codepath.apps.twitterclient.fragments.timeline.MentionsTimelineFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
