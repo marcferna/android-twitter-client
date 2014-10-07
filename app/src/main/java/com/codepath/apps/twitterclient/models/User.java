@@ -1,5 +1,8 @@
 package com.codepath.apps.twitterclient.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.helpers.UserHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -12,7 +15,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Created by marc on 9/25/14.
  */
-public class User {
+public class User implements Parcelable {
 
   @SerializedName("name")
   private String name;
@@ -28,6 +31,44 @@ public class User {
   private int friendsCount;
   @SerializedName("followersCount")
   private int followersCount;
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(name);
+    dest.writeLong(uid);
+    dest.writeString(screenName);
+    dest.writeString(profileImageUrl);
+    dest.writeString(tagline);
+    dest.writeInt(friendsCount);
+    dest.writeInt(followersCount);
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  private User(Parcel in) {
+    name = in.readString();
+    uid  = in.readLong();
+    screenName = in.readString();
+    profileImageUrl = in.readString();
+    tagline = in.readString();
+    friendsCount = in.readInt();
+    followersCount = in.readInt();
+  }
+
+  public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+    public User createFromParcel(Parcel in) {
+      return new User(in);
+    }
+
+    public User[] newArray(int size) {
+      return new User[size];
+    }
+  };
+
+  public User() {}
 
   public static User fromJSON(JSONObject jsonObject) {
     User user = new User();

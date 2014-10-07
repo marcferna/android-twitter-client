@@ -86,5 +86,8 @@ public abstract class TweetsListFragment extends SherlockFragment {
   public void addAll(ArrayList<Tweet> tweets) {
     aTweets.addAll(tweets);
   }
+  public void insert(Tweet tweet, int position) {
+    aTweets.insert(tweet, position);
+  }
 
 }

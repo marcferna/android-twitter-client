@@ -50,6 +50,10 @@
             android:label="@string/title_activity_timeline" >
         </activity>
         <activity
+          android:name="com.codepath.apps.twitterclient.activities.ComposeActivity"
+          android:label="@string/title_activity_timeline" >
+        </activity>
+        <activity
             android:name="com.codepath.apps.twitterclient.activities.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
