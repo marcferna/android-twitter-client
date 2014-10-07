@@ -1,12 +1,16 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
-import com.codepath.apps.twitterclient.activities.TimelineActivity;
+import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.TwitterApplication;
+import com.codepath.apps.twitterclient.TwitterClient;
+import com.codepath.apps.twitterclient.helpers.LoginHelper;
 import com.codepath.oauth.OAuthLoginActivity;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 
@@ -27,6 +31,9 @@ public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
+    LoginHelper loginHelper = TwitterApplication.getLoginHelper();
+    loginHelper.setLoggedIn(true);
+    loginHelper.fetchUserInfo(new JsonHttpResponseHandler());
     Intent homepageIntent = new Intent(this, TimelineActivity.class);
     startActivity(homepageIntent);
 	}
@@ -36,6 +43,7 @@ public class LoginActivity extends OAuthLoginActivity<TwitterClient> {
 	@Override
 	public void onLoginFailure(Exception e) {
 		e.printStackTrace();
+    TwitterApplication.getLoginHelper().setLoggedIn(false);
 	}
 
 	// Click handler method for the button used to start OAuth flow

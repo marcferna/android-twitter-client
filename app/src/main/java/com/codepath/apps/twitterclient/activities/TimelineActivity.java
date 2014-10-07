@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.adapters.ViewPagerAdapter;
 import com.codepath.apps.twitterclient.fragments.ComposeFragment;
 import com.codepath.apps.twitterclient.models.Tweet;
@@ -112,7 +113,7 @@ public class TimelineActivity extends SherlockFragmentActivity implements
 
   public void onClickProfile(com.actionbarsherlock.view.MenuItem item) {
     Intent profile_intent = new Intent(this, ProfileActivity.class);
-    profile_intent.putExtra("user_uuid", 5);
+    profile_intent.putExtra("user_uid", TwitterApplication.getLoginHelper().getUser().getUid());
     startActivity(profile_intent);
   }
 

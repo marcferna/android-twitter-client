@@ -2,6 +2,8 @@ package com.codepath.apps.twitterclient;
 
 import android.content.Context;
 
+import com.codepath.apps.twitterclient.helpers.LoginHelper;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -16,6 +18,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  *     
  */
 public class TwitterApplication extends com.activeandroid.app.Application {
+  public static final String SHARED_PREFERENCES_KEY = "TwitterClientPreferences";
 	private static Context context;
 
 	@Override
@@ -30,9 +33,22 @@ public class TwitterApplication extends com.activeandroid.app.Application {
 		.defaultDisplayImageOptions(defaultOptions)
 		.build();
 		ImageLoader.getInstance().init(config);
+
+    LoginHelper loginHelper = this.getLoginHelper();
+    if (loginHelper.isLoggedIn()) {
+      loginHelper.fetchUserInfo(new JsonHttpResponseHandler());
+    }
 	}
 
 	public static TwitterClient getRestClient() {
 		return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TwitterApplication.context);
 	}
+
+  public static LoginHelper getLoginHelper() {
+    return LoginHelper.getInstance();
+  }
+
+  public static Context getContext() {
+    return context;
+  }
 }

@@ -9,10 +9,13 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.helpers.UserHandler;
 import com.codepath.apps.twitterclient.models.User;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class UserHeaderFragment extends SherlockFragment {
+
+  private long uid;
 
   private ImageView ivProfile;
   private TextView tvName;
@@ -20,8 +23,17 @@ public class UserHeaderFragment extends SherlockFragment {
   private TextView tvFollowersCount;
   private TextView tvFollowingCount;
 
+  public static final UserHeaderFragment newInstance(long uid) {
+    UserHeaderFragment fragment = new UserHeaderFragment();
+    Bundle bundle = new Bundle(1);
+    bundle.putLong("user_uid", uid);
+    fragment.setArguments(bundle);
+    return fragment;
+  }
+
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    uid = getArguments().getLong("user_uid");
   }
 
   @Override
@@ -34,6 +46,17 @@ public class UserHeaderFragment extends SherlockFragment {
     tvTagline = (TextView) v.findViewById(R.id.tvTagline);
     tvFollowersCount = (TextView) v.findViewById(R.id.tvFollowersCount);
     tvFollowingCount = (TextView) v.findViewById(R.id.tvFollowingCount);
+    User.getUser(uid, new UserHandler() {
+      @Override
+      public void onSuccess(User user) {
+        loadUserInfo(user);
+      }
+
+      @Override
+      public void onFailure() {
+
+      }
+    });
     return v;
   }
 
