@@ -1,6 +1,8 @@
-package com.codepath.apps.twitterclient;
+package com.codepath.apps.twitterclient.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.activities.ProfileActivity;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -19,8 +23,12 @@ import java.util.List;
  * Created by marc on 9/25/14.
  */
 public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
-  public TweetArrayAdapter(Context context, List<Tweet> tweets) {
+
+  private View.OnClickListener clickListener;
+
+  public TweetArrayAdapter(Context context, List<Tweet> tweets, View.OnClickListener clickListener) {
     super(context, 0, tweets);
+    this.clickListener = clickListener;
   }
 
   @Override
@@ -35,6 +43,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
       v = convertView;
     }
 
+    // @todo: Add the view holder pattern
+
     ImageView ivProfileImage = (ImageView) v.findViewById(R.id.ivProfileImage);
     TextView tvUserName = (TextView) v.findViewById(R.id.tvUserName);
     TextView tvBody = (TextView) v.findViewById(R.id.tvBody);
@@ -44,6 +54,8 @@ public class TweetArrayAdapter extends ArrayAdapter<Tweet> {
     ivProfileImage.setImageResource(0);
     ImageLoader imageLoader = ImageLoader.getInstance();
     imageLoader.displayImage(tweet.getUser().getProfileImageUrl(), ivProfileImage);
+    ivProfileImage.setTag(tweet.getUser().getUid());
+    ivProfileImage.setOnClickListener(clickListener);
     tvName.setText(tweet.getUser().getName());
     tvUserName.setText("@" + tweet.getUser().getScreenName());
     tvBody.setText(tweet.getBody());

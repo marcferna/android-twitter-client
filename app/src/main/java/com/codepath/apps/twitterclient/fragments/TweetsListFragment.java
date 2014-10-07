@@ -1,5 +1,6 @@
 package com.codepath.apps.twitterclient.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.codepath.apps.twitterclient.EndlessScrollListener;
 import com.codepath.apps.twitterclient.R;
-import com.codepath.apps.twitterclient.TweetArrayAdapter;
+import com.codepath.apps.twitterclient.adapters.TweetArrayAdapter;
 
 import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.TwitterClient;
@@ -26,11 +27,26 @@ public abstract class TweetsListFragment extends SherlockFragment {
   private ListView lvTweets;
   protected TwitterClient client;
 
+  private OnClickListener onClickListener;
+
+  public interface OnClickListener {
+    public void onProfileImageClicked(long uid);
+  }
+
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     tweets = new ArrayList<Tweet>();
-    aTweets = new TweetArrayAdapter(getActivity(), tweets);
+    aTweets = new TweetArrayAdapter(getActivity(), tweets, new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        if (onClickListener != null) {
+          onClickListener.onProfileImageClicked(Long.parseLong(v.getTag().toString()));
+        }
+      }
+    });
+
+
     aTweets.notifyDataSetChanged();
     client = TwitterApplication.getRestClient();
     populateWithTweets();
@@ -51,8 +67,15 @@ public abstract class TweetsListFragment extends SherlockFragment {
         TweetsListFragment.this.populateWithTweets(lastTweet.getUid());
       }
     });
-
     return v;
+  }
+
+  @Override
+  public void onAttach(Activity activity) {
+    super.onAttach(activity);
+    if (activity instanceof OnClickListener) {
+      onClickListener = (OnClickListener) activity;
+    }
   }
 
   protected void populateWithTweets () {

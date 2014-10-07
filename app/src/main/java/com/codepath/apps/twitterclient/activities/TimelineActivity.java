@@ -12,12 +12,14 @@ import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.TwitterApplication;
 import com.codepath.apps.twitterclient.adapters.ViewPagerAdapter;
 import com.codepath.apps.twitterclient.fragments.ComposeFragment;
+import com.codepath.apps.twitterclient.fragments.TweetsListFragment;
+import com.codepath.apps.twitterclient.fragments.timeline.HomeTimelineFragment;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.page_transformers.ZoomOutPageTransformer;
 
 
 public class TimelineActivity extends SherlockFragmentActivity implements
-    ComposeFragment.OnItemSelectedListener {
+    ComposeFragment.OnItemSelectedListener, HomeTimelineFragment.OnClickListener {
 
   ComposeFragment composeFragment;
 
@@ -112,9 +114,7 @@ public class TimelineActivity extends SherlockFragmentActivity implements
   }
 
   public void onClickProfile(com.actionbarsherlock.view.MenuItem item) {
-    Intent profile_intent = new Intent(this, ProfileActivity.class);
-    profile_intent.putExtra("user_uid", TwitterApplication.getLoginHelper().getUser().getUid());
-    startActivity(profile_intent);
+    loadProfile(TwitterApplication.getLoginHelper().getUser().getUid());
   }
 
 //  @Override
@@ -132,6 +132,12 @@ public class TimelineActivity extends SherlockFragmentActivity implements
 //    return super.onOptionsItemSelected(item);
 //  }
 
+  public void loadProfile(long uid) {
+    Intent profile_intent = new Intent(this, ProfileActivity.class);
+    profile_intent.putExtra("user_uid", uid);
+    startActivity(profile_intent);
+  }
+
   public void onTweetComposed(Tweet tweet) {
     // Add the newly created tweet
 //    aTweets.insert(tweet, 0);
@@ -139,5 +145,10 @@ public class TimelineActivity extends SherlockFragmentActivity implements
 //    ft.remove(composeFragment);
 //    ft.commit();
 
+  }
+
+  @Override
+  public void onProfileImageClicked(long uid) {
+    loadProfile(uid);
   }
 }
