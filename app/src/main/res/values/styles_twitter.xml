@@ -40,6 +40,11 @@
         <item name="backgroundStacked">@drawable/ab_stacked_solid_twitter</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_twitter</item>
         <item name="progressBarStyle">@style/ProgressBar.Twitter</item>
+        <item name="titleTextStyle">@style/ActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="ActionBar.TitleTextStyle" parent="@style/TextAppearance.Sherlock.Widget.ActionBar.Title">
+      <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="ActionBar.Transparent.Twitter" parent="@style/Widget.Sherlock.Light.ActionBar">
