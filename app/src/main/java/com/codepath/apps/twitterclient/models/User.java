@@ -76,7 +76,7 @@ public class User implements Parcelable {
       user.name = jsonObject.getString("name");
       user.uid = jsonObject.getLong("id");
       user.screenName = jsonObject.getString("screen_name");
-      user.profileImageUrl = jsonObject.getString("profile_image_url");
+      user.profileImageUrl = jsonObject.getString("profile_image_url").replace("normal", "bigger");
       user.tagline = jsonObject.getString("description");
       user.friendsCount = jsonObject.getInt("friends_count");
       user.followersCount = jsonObject.getInt("followers_count");
