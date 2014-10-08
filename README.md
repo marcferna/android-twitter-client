@@ -1,6 +1,13 @@
-# Google Image Searcher for Android
+# Twitter Client for Android
 
 ![Video Walkthrough](demo.gif)
+
+## NEW Features (All required stories)
+- User can switch between Timeline and Mention views using tabs
+- User can navigate to view their own profile
+- User can click on the profile image in any tweet to see another user's profile.
+
+Hours spent: ~7
 
 ## Features
 - User can log in with his/her Twitter account
